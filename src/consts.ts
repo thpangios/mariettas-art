@@ -1,15 +1,6 @@
-// Centralised placeholder copy. Replace when real details arrive.
-export const SITE = {
-  artistName: "Marietta", // e.g. "Manuela Rossi"
-  artistShort: "Marietta",
-  tagline: "Paintings in acrylic — figure, light, silhouette.",
-  description:
-    "Original acrylic paintings by Marietta. Figurative works exploring light, silhouette, and quiet narrative. Browse the collection and inquire about available originals.",
-  location: "Studio — City, Country",
-  email: "hello@example.com",
-  instagram: "https://instagram.com/",
-  url: "https://example.com",
-};
+import settings from "./data/settings.json";
+
+export const SITE = settings;
 
 // Top-level "rooms" — shown in the home directory hero and the nav.
 export const ROOMS: { href: string; label: string; index: string }[] = [

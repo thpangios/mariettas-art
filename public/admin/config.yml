@@ -21,6 +21,65 @@ display_url: https://example.com
 logo_url: https://example.com/favicon.svg
 
 collections:
+  - name: settings
+    label: Site settings
+    delete: false
+    editor:
+      preview: false
+    files:
+      - name: site
+        label: Contact & site info
+        file: src/data/settings.json
+        format: json
+        fields:
+          - { label: Artist name (full), name: artistName, widget: string }
+          - { label: Artist name (short), name: artistShort, widget: string }
+          - { label: Tagline, name: tagline, widget: string, hint: 'One short line shown in headers and SEO' }
+          - { label: Site description, name: description, widget: text, hint: 'Used by search engines and social previews' }
+          - { label: Studio location, name: location, widget: string, required: false }
+          - { label: Contact email, name: email, widget: string, hint: 'Where the mailto: links point' }
+          - { label: Instagram URL, name: instagram, widget: string, required: false }
+          - { label: Site URL, name: url, widget: string, hint: 'Full https URL of the site' }
+
+  - name: pages
+    label: Pages
+    delete: false
+    editor:
+      preview: false
+    files:
+      - name: about
+        label: About page
+        file: src/content/pages/about.md
+        format: frontmatter
+        fields:
+          - { label: Eyebrow, name: eyebrow, widget: string, default: 'About' }
+          - { label: Heading, name: heading, widget: string }
+          - { label: Lede (intro paragraph), name: lede, widget: text, required: false }
+          - label: Selected exhibitions
+            name: exhibitions
+            widget: list
+            required: false
+            fields:
+              - { label: Year, name: year, widget: string }
+              - { label: Title, name: title, widget: string }
+              - { label: Venue, name: venue, widget: string }
+          - { label: Contact section heading, name: contactHeading, widget: string, required: false, default: 'Contact' }
+          - { label: Contact section blurb, name: contactBlurb, widget: text, required: false }
+          - { label: Body, name: body, widget: markdown, required: false, hint: 'Biography paragraphs shown between the lede and the exhibitions list' }
+
+      - name: contact
+        label: Contact page
+        file: src/content/pages/contact.md
+        format: frontmatter
+        fields:
+          - { label: Eyebrow, name: eyebrow, widget: string, default: 'Inquire' }
+          - { label: Heading, name: heading, widget: string }
+          - { label: Lede, name: lede, widget: text, required: false }
+          - { label: 'Direct email label', name: directLabel, widget: string, required: false, hint: 'Text before the email link, e.g. "Prefer email?"' }
+          - { label: Submit button label, name: submitLabel, widget: string, required: false }
+          - { label: Thank-you message, name: thanksMessage, widget: string, required: false }
+          - { label: Body, name: body, widget: markdown, required: false }
+
   - name: paintings
     label: Paintings
     label_singular: Painting

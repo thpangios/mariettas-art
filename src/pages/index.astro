@@ -3,7 +3,6 @@ import { getCollection } from "astro:content";
 import { Image } from "astro:assets";
 import Base from "../layouts/Base.astro";
 import { SITE, ROOMS } from "../consts";
-import signatureMark from "../../Untitled image (1)@2x.png";
 import butterflyMark from "../../Untitled image.png";
 
 const paintings = (await getCollection("paintings"))
@@ -26,15 +25,7 @@ const wall = paintings.slice(0, 3);
           <h1 class="entry__title sr-only">Paintings, quiet light, silhouette.</h1>
           <div class="entry__signature" aria-hidden="true">
             <div class="entry__signature-mark rise rise-1">
-              <Image
-                class="entry__signature-image"
-                src={signatureMark}
-                alt=""
-                widths={[500, 900, 1400]}
-                sizes="(min-width: 920px) 42vw, 82vw"
-                loading="eager"
-                format="png"
-              />
+              <span class="entry__signature-text">{SITE.artistName}</span>
             </div>
             <div class="entry__butterfly-mark rise rise-2">
               <Image
@@ -42,7 +33,7 @@ const wall = paintings.slice(0, 3);
                 src={butterflyMark}
                 alt=""
                 widths={[240, 420, 700]}
-                sizes="(min-width: 920px) 14vw, 28vw"
+                sizes="(min-width: 920px) 10vw, 18vw"
                 loading="eager"
                 format="png"
               />
@@ -159,71 +150,85 @@ const wall = paintings.slice(0, 3);
 
   .entry__signature {
     position: relative;
-    width: min(100%, 42rem);
-    min-height: clamp(10rem, 22vw, 15rem);
-    margin-bottom: clamp(2.2rem, 4vw, 3.25rem);
+    width: min(100%, 58rem);
+    min-height: clamp(13rem, 28vw, 19rem);
+    margin-bottom: clamp(2.4rem, 4.2vw, 3.6rem);
     overflow: visible;
     z-index: 0;
   }
   .entry__signature-mark {
     position: absolute;
     inset: 0;
+    display: flex;
+    align-items: flex-start;
+    padding-left: clamp(0.15rem, 0.5vw, 0.45rem);
+    padding-top: clamp(0.9rem, 1.8vw, 1.35rem);
     overflow: visible;
   }
-  .entry__signature-image {
+  .entry__signature-text {
+    position: relative;
+    display: inline-block;
+    font-family: var(--font-script);
+    font-size: clamp(8.8rem, 20vw, 14rem);
+    line-height: 0.82;
+    letter-spacing: 0.01em;
+    color: color-mix(in oklab, var(--ink) 88%, var(--accent));
+    text-shadow:
+      0.02em 0.02em 0 color-mix(in oklab, var(--cream) 72%, transparent),
+      0.12em 0.16em 0.55em color-mix(in oklab, var(--accent) 16%, transparent);
+  }
+  .entry__signature-text::after {
+    content: "";
     position: absolute;
-    left: 0;
-    top: 0;
-    width: min(100%, 40rem);
-    max-width: 100%;
-    height: auto;
-    opacity: 1;
-    mix-blend-mode: multiply;
-    transform: translate(-7%, -6%) scale(1.04);
-    transform-origin: top left;
-    image-rendering: -webkit-optimize-contrast;
-    filter:
-      grayscale(1)
-      brightness(0.28)
-      contrast(1.55);
+    left: 6%;
+    right: 3%;
+    bottom: 12%;
+    height: clamp(0.18rem, 0.65vw, 0.42rem);
+    border-radius: 999px;
+    background:
+      linear-gradient(
+        90deg,
+        transparent 0%,
+        color-mix(in oklab, var(--accent) 34%, transparent) 14%,
+        color-mix(in oklab, var(--accent) 82%, transparent) 58%,
+        transparent 100%
+      );
+    transform: rotate(-2.8deg);
+    opacity: 0.9;
   }
   .entry__butterfly-mark {
     position: absolute;
-    inset: 0;
+    left: clamp(18.4rem, 43vw, 28.8rem);
+    top: clamp(-4.8rem, -8.8vw, -1.9rem);
+    width: clamp(8.5rem, 14vw, 11.5rem);
     overflow: visible;
     pointer-events: none;
   }
   .entry__butterfly-image {
-    position: absolute;
-    left: 0;
-    top: 0;
-    width: clamp(8rem, 24vw, 12.5rem);
-    max-width: none;
+    width: 100%;
     height: auto;
-    opacity: 0.98;
-    mix-blend-mode: multiply;
-    transform: translate(13.5rem, 1.9rem) rotate(-7deg);
+    max-width: none;
+    opacity: 1;
+    transform: rotate(-7deg);
     transform-origin: center;
-    filter:
-      brightness(0.38)
-      contrast(1.35)
-      drop-shadow(0 10px 18px color-mix(in oklab, var(--cream) 40%, transparent));
+    filter: brightness(0);
   }
   @media (max-width: 919px) {
     .entry__signature {
-      width: min(100%, 31rem);
-      min-height: clamp(8rem, 34vw, 11rem);
+      width: min(100%, 32rem);
+      min-height: clamp(9.5rem, 40vw, 13rem);
     }
-    .entry__signature-image {
-      width: min(100%, 29rem);
-      transform: translate(-8%, -10%) scale(1.02);
+    .entry__signature-text {
+      font-size: clamp(5.5rem, 24vw, 8.3rem);
+      line-height: 0.84;
     }
     .entry__butterfly-mark {
-      inset: 0;
+      left: clamp(11.6rem, 54vw, 16.2rem);
+      top: clamp(-2.7rem, -9vw, -1rem);
+      width: clamp(5.8rem, 22vw, 7.8rem);
     }
     .entry__butterfly-image {
-      width: clamp(6.5rem, 24vw, 8.5rem);
-      transform: translate(9.2rem, 1.9rem) rotate(-7deg);
+      transform: rotate(-6deg);
     }
   }
 

@@ -1,6 +1,13 @@
 ---
+import { getEntry } from "astro:content";
 import Base from "../layouts/Base.astro";
 import { SITE } from "../consts";
+
+const entry = await getEntry("pages", "contact");
+if (!entry) throw new Error("Missing src/content/pages/contact.md");
+const { data } = entry;
+const submitLabel = data.submitLabel ?? "Send inquiry";
+const thanksMessage = data.thanksMessage ?? "Thank you — your message is on its way.";
 ---
 
 <Base
@@ -10,14 +17,11 @@ import { SITE } from "../consts";
   <section class="section surface-mauve">
     <div class="container contact">
       <div class="contact__intro">
-        <p class="eyebrow">Inquire</p>
-        <h1 class="h1">Say hello.</h1>
-        <p class="lede">
-          For available originals, studio visits, or commissions — send a note.
-          Replies usually within a few days.
-        </p>
+        <p class="eyebrow">{data.eyebrow}</p>
+        <h1 class="h1">{data.heading}</h1>
+        {data.lede && <p class="lede">{data.lede}</p>}
         <p class="contact__direct">
-          Prefer email? <a class="brush" href={`mailto:${SITE.email}`}>{SITE.email}</a>
+          {data.directLabel ?? "Prefer email?"} <a class="brush" href={`mailto:${SITE.email}`}>{SITE.email}</a>
         </p>
       </div>
 
@@ -54,10 +58,10 @@ import { SITE } from "../consts";
           <textarea id="message" name="message" rows="5" required></textarea>
         </div>
 
-        <button type="submit" class="btn btn-primary">Send inquiry</button>
+        <button type="submit" class="btn btn-primary">{submitLabel}</button>
       </form>
 
-      <script is:inline>
+      <script is:inline define:vars={{ thanksMessage }}>
         // Prefill "work" from ?work= if present, and show a thank-you if ?sent=1
         const params = new URLSearchParams(location.search);
         const work = params.get("work");
@@ -70,7 +74,7 @@ import { SITE } from "../consts";
           if (f) {
             const msg = document.createElement("p");
             msg.className = "form__thanks";
-            msg.textContent = "Thank you — your message is on its way.";
+            msg.textContent = thanksMessage;
             f.replaceWith(msg);
           }
         }

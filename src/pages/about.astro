@@ -1,6 +1,12 @@
 ---
+import { getEntry, render } from "astro:content";
 import Base from "../layouts/Base.astro";
 import { SITE } from "../consts";
+
+const entry = await getEntry("pages", "about");
+if (!entry) throw new Error("Missing src/content/pages/about.md");
+const { data } = entry;
+const { Content } = await render(entry);
 ---
 
 <Base
@@ -10,38 +16,37 @@ import { SITE } from "../consts";
   <section class="section surface-mauve">
     <div class="container about">
       <div class="about__intro">
-        <p class="eyebrow">About</p>
-        <h1 class="h1">A short<i class="flourish" aria-hidden="true"></i><br/>introduction.</h1>
+        <p class="eyebrow">{data.eyebrow}</p>
+        <h1 class="h1">{data.heading}</h1>
       </div>
       <div class="about__body prose">
-        <p class="lede dropcap">
-          {SITE.artistName} is a painter working primarily in acrylic on canvas,
-          with a recurring interest in silhouette, quiet interiors, and the
-          colour of late light.
-        </p>
-        <p>
-          <em>Placeholder biography.</em> Replace this paragraph with the
-          artist's own words — a few sentences on where she works, what the
-          paintings are about, the materials she uses, and where the work has
-          been shown.
-        </p>
-        <p>
-          <em>Optional paragraph.</em> Influences, recurring subjects, a note
-          on process. Keep it human and specific — collectors read it.
-        </p>
+        {data.lede && <p class="lede dropcap">{data.lede}</p>}
 
-        <h2 class="h3 about__h">Selected exhibitions</h2>
-        <ul class="about__list">
-          <li><span class="about__year">2024</span> — <em>Exhibition title</em>, Gallery, City</li>
-          <li><span class="about__year">2023</span> — <em>Exhibition title</em>, Gallery, City</li>
-          <li><span class="about__year">2022</span> — <em>Exhibition title</em>, Gallery, City</li>
-        </ul>
+        <Content />
 
-        <h2 class="h3 about__h">Contact</h2>
-        <p>
-          For studio visits, commissions, and availability:
-          <a class="brush" href={`mailto:${SITE.email}`}>{SITE.email}</a>
-        </p>
+        {data.exhibitions && data.exhibitions.length > 0 && (
+          <>
+            <h2 class="h3 about__h">Selected exhibitions</h2>
+            <ul class="about__list">
+              {data.exhibitions.map((ex) => (
+                <li>
+                  <span class="about__year">{ex.year}</span> — <em>{ex.title}</em>, {ex.venue}
+                </li>
+              ))}
+            </ul>
+          </>
+        )}
+
+        {data.contactHeading && (
+          <>
+            <h2 class="h3 about__h">{data.contactHeading}</h2>
+            <p>
+              {data.contactBlurb}
+              {" "}
+              <a class="brush" href={`mailto:${SITE.email}`}>{SITE.email}</a>
+            </p>
+          </>
+        )}
       </div>
     </div>
   </section>

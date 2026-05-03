@@ -20,4 +20,29 @@ const paintings = defineCollection({
     }),
 });
 
-export const collections = { paintings };
+const pages = defineCollection({
+  loader: glob({ pattern: "**/*.{md,mdx}", base: "./src/content/pages" }),
+  schema: z.object({
+    eyebrow: z.string(),
+    heading: z.string(),
+    lede: z.string().optional(),
+    // About-specific
+    exhibitions: z
+      .array(
+        z.object({
+          year: z.union([z.number(), z.string()]),
+          title: z.string(),
+          venue: z.string(),
+        }),
+      )
+      .optional(),
+    contactHeading: z.string().optional(),
+    contactBlurb: z.string().optional(),
+    // Contact-specific
+    directLabel: z.string().optional(),
+    submitLabel: z.string().optional(),
+    thanksMessage: z.string().optional(),
+  }),
+});
+
+export const collections = { paintings, pages };

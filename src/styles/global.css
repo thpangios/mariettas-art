@@ -34,6 +34,7 @@
   /* Typography */
   --font-serif: "Fraunces", "Cormorant Garamond", Georgia, "Times New Roman", serif;
   --font-sans: "Inter", system-ui, -apple-system, "Helvetica Neue", sans-serif;
+  --font-script: "Luxurious Script", "Snell Roundhand", "Apple Chancery", cursive;
 
   /* Rhythm */
   --step--1: clamp(0.875rem, 0.82rem + 0.28vw, 1rem);
@@ -278,9 +279,18 @@ body {
 .marquee__track > span { display: inline-flex; align-items: center; gap: 3rem; white-space: nowrap; }
 .marquee__star {
   display: inline-block;
-  color: var(--accent);
-  font-size: 0.7em;
-  transform: translateY(-0.1em);
+  width: 1.96rem;
+  height: 1.47rem;
+  color: transparent;
+  font-size: 0;
+  line-height: 0;
+  transform: translate(-0.18rem, -0.04em);
+  background-image: url("/butterfly-mark.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  filter: brightness(0);
+  opacity: 0.72;
 }
 @keyframes marquee {
   from { transform: translateX(0); }
@@ -328,23 +338,30 @@ body {
   color: var(--accent);
 }
 
-/* Hand-drawn asterisk / flourish for headings */
+/* Butterfly flourish used for headings and footer details */
 .flourish {
   display: inline-block;
-  width: 1.1em;
-  height: 1.1em;
-  vertical-align: -0.1em;
-  margin-inline: 0.2em;
-  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40' fill='none'><path d='M20 4 V36 M5 12 L35 28 M5 28 L35 12 M8 20 H32' stroke='%237e5a65' stroke-width='2.4' stroke-linecap='round' opacity='0.85'/></svg>");
+  width: 2.17em;
+  height: 1.61em;
+  vertical-align: -0.04em;
+  margin-inline: 0.05em 0.28em;
+  background-image: url("/butterfly-mark.png");
   background-size: contain;
   background-repeat: no-repeat;
+  background-position: center;
+  filter: brightness(0);
+  opacity: 0.76;
+  transform: translateX(-0.16em);
 }
 .flourish--butterfly {
-  width: 1.5em;
-  height: 1.35em;
-  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 88 74' fill='none'><g transform='translate(5 4) rotate(-9 39 33)'><path d='M42 38 C35 31 29 24 22 18 C16 13 10 13 8 18 C6 24 10 32 16 38 C21 42 27 46 35 49 C29 51 24 55 23 60 C22 65 26 69 31 68 C37 66 42 58 44 48 C46 39 45 41 42 38 Z' fill='%23140f0f'/><path d='M45 35 C51 27 57 18 63 11 C68 5 74 4 77 9 C81 16 79 27 74 36 C69 43 62 48 53 53 C61 53 68 56 71 62 C73 66 71 71 66 72 C59 72 51 67 45 56 C42 49 41 39 45 35 Z' fill='%23140f0f'/><path d='M42 38 C38 45 39 53 42 61 C46 68 50 73 54 73 C57 73 58 70 56 67 C53 61 49 54 46 47 C45 43 44 40 42 38 Z' fill='%23140f0f'/><path d='M44 36 C45 29 45 21 44 14 C43 8 41 5 39 5 C37 5 35 8 35 13 C35 20 37 28 40 35' stroke='%23140f0f' stroke-width='2.4' stroke-linecap='round'/><path d='M41 13 C37 7 33 4 28 4' stroke='%23140f0f' stroke-width='2.2' stroke-linecap='round'/><path d='M43 12 C46 6 50 2 56 1' stroke='%23140f0f' stroke-width='2.2' stroke-linecap='round'/><path d='M19 20 C15 22 13 28 16 34 C19 40 26 44 34 47 C27 42 24 35 24 28 C24 24 22 21 19 20 Z' fill='%23f3ead9'/><path d='M24 19 C20 16 16 16 14 19 C12 22 13 26 16 29 C18 26 21 22 24 19 Z' fill='%23f3ead9'/><path d='M31 50 C28 52 28 57 31 61 C34 64 38 64 42 62 C39 58 35 54 31 50 Z' fill='%23f3ead9'/><path d='M60 14 C55 19 51 25 48 31 C46 36 45 42 45 49 C50 42 55 34 58 27 C60 22 61 17 60 14 Z' fill='%23f3ead9'/><path d='M63 11 C67 8 71 8 73 11 C75 15 74 19 70 22 C68 18 66 14 63 11 Z' fill='%23f3ead9'/><path d='M54 35 C49 40 46 46 45 53 C51 50 56 46 60 41 C63 37 64 33 62 30 C60 29 57 31 54 35 Z' fill='%23f3ead9'/><path d='M57 52 C52 54 48 58 46 63 C51 64 57 63 62 60 C66 57 68 53 67 49 C64 48 61 49 57 52 Z' fill='%23f3ead9'/><path d='M33 38 C29 34 27 30 26 26' stroke='%23140f0f' stroke-width='1.8' stroke-linecap='round'/><path d='M50 27 C48 31 47 35 46 40' stroke='%23140f0f' stroke-width='1.8' stroke-linecap='round'/></g></svg>");
+  width: 2.38em;
+  height: 1.82em;
 }
-.flourish--small { width: 0.8em; height: 0.8em; }
+.flourish--small {
+  width: 1.54em;
+  height: 1.26em;
+  vertical-align: -0.02em;
+}
 
 /* Painted frame — irregular SVG border around an element */
 .painted-frame {
