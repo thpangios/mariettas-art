@@ -1,0 +1,69 @@
+backend:
+  name: git-gateway
+  branch: main
+  commit_messages:
+    create: 'Add painting "{{slug}}"'
+    update: 'Update painting "{{slug}}"'
+    delete: 'Remove painting "{{slug}}"'
+    uploadMedia: 'Upload image "{{path}}"'
+    deleteMedia: 'Remove image "{{path}}"'
+
+# Editorial workflow gives a "draft → in review → publish" flow.
+# Comment this out if you want changes to publish immediately.
+publish_mode: editorial_workflow
+
+# Default media folder (only used by entries without their own override).
+media_folder: src/assets/paintings
+public_folder: /src/assets/paintings
+
+site_url: https://example.com
+display_url: https://example.com
+logo_url: https://example.com/favicon.svg
+
+collections:
+  - name: paintings
+    label: Paintings
+    label_singular: Painting
+    folder: src/content/paintings
+    create: true
+    slug: '{{slug}}'
+    extension: mdx
+    format: frontmatter
+    # Per-collection media: paths are written relative to the MDX file,
+    # which is what Astro's content collection `image()` loader expects.
+    media_folder: '../../assets/paintings'
+    public_folder: '../../assets/paintings'
+    summary: '{{title}} ({{year}}) — {{status}}'
+    sortable_fields: [order, year, title]
+    view_groups:
+      - label: Category
+        field: category
+      - label: Status
+        field: status
+    fields:
+      - { label: Title, name: title, widget: string }
+      - { label: Year, name: year, widget: number, value_type: int, required: false, min: 1900, max: 2100 }
+      - label: Category
+        name: category
+        widget: select
+        default: canvas
+        options:
+          - { label: Canvas, value: canvas }
+          - { label: Paper, value: paper }
+      - { label: Medium, name: medium, widget: string, default: 'Acrylic on canvas' }
+      - { label: Dimensions, name: dimensions, widget: string, required: false, hint: 'e.g. 30 × 30 cm' }
+      - label: Status
+        name: status
+        widget: select
+        default: available
+        options:
+          - { label: Available, value: available }
+          - { label: Reserved, value: reserved }
+          - { label: Sold, value: sold }
+      - { label: Featured on homepage, name: featured, widget: boolean, default: false }
+      - { label: Display order, name: order, widget: number, value_type: int, default: 0, hint: 'Lower numbers appear first' }
+      - { label: Cover image, name: cover, widget: image, hint: 'High-quality JPEG works best' }
+      - { label: Alt text, name: alt, widget: string, hint: 'Describe the image for screen readers and SEO' }
+      - { label: Short description, name: description, widget: text, required: false }
+      - { label: Tags, name: tags, widget: list, default: [], required: false }
+      - { label: Body, name: body, widget: markdown, required: false, hint: 'Long-form description shown on the painting page' }
