@@ -52,6 +52,21 @@ const personLd = {
     {structuredData && (
       <script type="application/ld+json" set:html={JSON.stringify(structuredData)} />
     )}
+
+    <script src="https://identity.netlify.com/v1/netlify-identity-widget.js" is:inline></script>
+    <script is:inline>
+      // Route Netlify Identity invite/recovery/confirmation links into /admin/
+      // so the artist lands on the CMS after setting her password.
+      if (window.netlifyIdentity) {
+        window.netlifyIdentity.on("init", (user) => {
+          if (!user) {
+            window.netlifyIdentity.on("login", () => {
+              document.location.href = "/admin/";
+            });
+          }
+        });
+      }
+    </script>
   </head>
   <body>
     <a href="#main" class="sr-only">Skip to content</a>
