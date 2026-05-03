@@ -197,10 +197,25 @@
     </style>
   </head>
   <body>
-    <!-- Netlify Identity widget: shows the login modal -->
+    <!-- Netlify Identity widget loads first so it can rehydrate the session
+         from localStorage before Decap CMS boots. -->
     <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
 
-    <!-- Decap CMS: the editor itself -->
-    <script src="https://unpkg.com/decap-cms@^3.6.0/dist/decap-cms.js"></script>
+    <script>
+      // Make sure Identity is fully initialised before Decap reads the user.
+      if (window.netlifyIdentity) {
+        window.netlifyIdentity.on("init", () => {
+          // Once the widget knows whether we're logged in, load Decap.
+          var s = document.createElement("script");
+          s.src = "https://unpkg.com/decap-cms@^3.6.0/dist/decap-cms.js";
+          document.body.appendChild(s);
+        });
+        window.netlifyIdentity.on("logout", () => {
+          // After logout, drop the user back at the login screen.
+          window.netlifyIdentity.close();
+          location.reload();
+        });
+      }
+    </script>
   </body>
 </html>
