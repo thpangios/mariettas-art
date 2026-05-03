@@ -1,0 +1,65 @@
+---
+import Base from "../layouts/Base.astro";
+import { SITE } from "../consts";
+---
+
+<Base
+  title="About"
+  description={`About ${SITE.artistName}, painter working in acrylic on canvas.`}
+>
+  <section class="section surface-mauve">
+    <div class="container about">
+      <div class="about__intro">
+        <p class="eyebrow">About</p>
+        <h1 class="h1">A short<i class="flourish" aria-hidden="true"></i><br/>introduction.</h1>
+      </div>
+      <div class="about__body prose">
+        <p class="lede dropcap">
+          {SITE.artistName} is a painter working primarily in acrylic on canvas,
+          with a recurring interest in silhouette, quiet interiors, and the
+          colour of late light.
+        </p>
+        <p>
+          <em>Placeholder biography.</em> Replace this paragraph with the
+          artist's own words — a few sentences on where she works, what the
+          paintings are about, the materials she uses, and where the work has
+          been shown.
+        </p>
+        <p>
+          <em>Optional paragraph.</em> Influences, recurring subjects, a note
+          on process. Keep it human and specific — collectors read it.
+        </p>
+
+        <h2 class="h3 about__h">Selected exhibitions</h2>
+        <ul class="about__list">
+          <li><span class="about__year">2024</span> — <em>Exhibition title</em>, Gallery, City</li>
+          <li><span class="about__year">2023</span> — <em>Exhibition title</em>, Gallery, City</li>
+          <li><span class="about__year">2022</span> — <em>Exhibition title</em>, Gallery, City</li>
+        </ul>
+
+        <h2 class="h3 about__h">Contact</h2>
+        <p>
+          For studio visits, commissions, and availability:
+          <a class="brush" href={`mailto:${SITE.email}`}>{SITE.email}</a>
+        </p>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .about {
+    display: grid;
+    gap: clamp(2rem, 5vw, 4rem);
+  }
+  @media (min-width: 900px) {
+    .about { grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.3fr); align-items: start; }
+  }
+  .about__intro .eyebrow { margin-bottom: 0.75rem; }
+  .about__body { font-size: 1rem; color: var(--ink-soft); }
+  .about__body p { max-width: 58ch; }
+  .about__h { margin-top: 2.5rem; color: var(--ink); }
+  .about__list { list-style: none; padding: 0; margin-top: 1rem; display: grid; gap: 0.5rem; }
+  .about__year { color: color-mix(in oklab, var(--ink) 55%, var(--mauve)); font-variant-numeric: tabular-nums; }
+  .about__list li { border-bottom: 1px solid var(--on-surface-line, var(--line)); padding-bottom: 0.5rem; }
+</style>

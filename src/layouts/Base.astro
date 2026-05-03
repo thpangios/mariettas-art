@@ -1,0 +1,62 @@
+---
+import "../styles/global.css";
+import SEO from "../components/SEO.astro";
+import Nav from "../components/Nav.astro";
+import Footer from "../components/Footer.astro";
+import { SITE } from "../consts";
+import { ClientRouter } from "astro:transitions";
+
+interface Props {
+  title?: string;
+  description?: string;
+  image?: string;
+  type?: "website" | "article";
+  noindex?: boolean;
+  structuredData?: Record<string, unknown>;
+  hideNav?: boolean;
+  hideFooter?: boolean;
+}
+
+const { title, description, image, type, noindex, structuredData, hideNav, hideFooter } = Astro.props;
+
+const personLd = {
+  "@context": "https://schema.org",
+  "@type": "Person",
+  name: SITE.artistName,
+  jobTitle: "Painter",
+  url: SITE.url,
+  sameAs: [SITE.instagram].filter(Boolean),
+};
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="theme-color" content="#eaddc6" />
+    <meta name="generator" content={Astro.generator} />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;1,9..144,300&family=Inter:wght@400;500&display=swap"
+    />
+
+    <SEO title={title} description={description} image={image} type={type} noindex={noindex} />
+    <ClientRouter />
+
+    <script type="application/ld+json" set:html={JSON.stringify(personLd)} />
+    {structuredData && (
+      <script type="application/ld+json" set:html={JSON.stringify(structuredData)} />
+    )}
+  </head>
+  <body>
+    <a href="#main" class="sr-only">Skip to content</a>
+    {!hideNav && <Nav />}
+    <main id="main"><slot /></main>
+    {!hideFooter && <Footer />}
+  </body>
+</html>

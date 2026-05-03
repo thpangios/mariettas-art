@@ -1,0 +1,58 @@
+---
+import { getCollection } from "astro:content";
+import Base from "../../layouts/Base.astro";
+import PaintingCard from "../../components/PaintingCard.astro";
+
+const works = (await getCollection("paintings"))
+  .filter((p) => p.data.category === "paper")
+  .sort((a, b) => a.data.order - b.data.order);
+---
+
+<Base
+  title="Paper Drawings"
+  description="Acrylic works on paper — studies, portraits, and small narrative pieces."
+>
+  <section class="section">
+    <div class="container">
+      <header class="section__head">
+        <p class="eyebrow">02 — The Rooms</p>
+        <h1 class="h1">Paper Drawings<i class="flourish" aria-hidden="true"></i></h1>
+        <p class="lede">Acrylic works on paper — quieter than the canvas pieces, often working things out in colour and silhouette before they take their final form.</p>
+      </header>
+      {works.length > 0 ? (
+        <div class="grid">
+          {works.map((p, i) => (
+            <PaintingCard
+              href={`/works/${p.id}/`}
+              title={p.data.title}
+              year={p.data.year}
+              medium={p.data.medium}
+              image={p.data.cover}
+              status={p.data.status}
+              eager={i < 2}
+            />
+          ))}
+        </div>
+      ) : (
+        <p class="empty">In the studio. New paper works will appear here soon.</p>
+      )}
+    </div>
+  </section>
+</Base>
+
+<style>
+  .section__head { margin-bottom: clamp(2rem, 5vw, 4rem); max-width: 56rem; }
+  .section__head .eyebrow { margin-bottom: 0.75rem; }
+  .section__head .lede { margin-top: 1rem; }
+  .grid {
+    display: grid;
+    gap: clamp(1.75rem, 3.5vw, 3.5rem) clamp(1.25rem, 2.5vw, 2.5rem);
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr));
+  }
+  .empty {
+    font-family: var(--font-serif);
+    font-size: var(--step-1);
+    color: var(--ink-muted);
+    padding-block: 3rem;
+  }
+</style>

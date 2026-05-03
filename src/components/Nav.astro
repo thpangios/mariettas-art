@@ -1,0 +1,63 @@
+---
+import { SITE, NAV } from "../consts";
+const path = Astro.url.pathname;
+const isActive = (href: string) => path === href || (href !== "/" && path.startsWith(href));
+---
+
+<header class="nav">
+  <div class="container nav__inner">
+    <a href="/" class="nav__brand" aria-label={`${SITE.artistName} — home`}>
+      <span class="brush-ink">{SITE.artistName}</span>
+    </a>
+    <nav aria-label="Primary">
+      <ul class="nav__list">
+        {NAV.map((item) => (
+          <li>
+            <a
+              href={item.href}
+              class="brush-ink"
+              aria-current={isActive(item.href) ? "page" : undefined}
+            >
+              {item.label}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<style>
+  .nav {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    backdrop-filter: saturate(140%) blur(10px);
+    background-color: color-mix(in oklab, var(--cream) 80%, transparent);
+    border-bottom: 1px solid color-mix(in oklab, var(--line) 60%, transparent);
+  }
+  .nav__inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-block: 1.1rem;
+  }
+  .nav__brand {
+    font-family: var(--font-serif);
+    font-weight: 400;
+    font-size: 1.25rem;
+    letter-spacing: -0.01em;
+  }
+  .nav__list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    gap: clamp(1.2rem, 2vw, 2.2rem);
+    font-size: 0.95rem;
+  }
+  @media (max-width: 480px) {
+    .nav__brand { font-size: 1.1rem; }
+    .nav__list { gap: 1rem; font-size: 0.9rem; }
+  }
+</style>

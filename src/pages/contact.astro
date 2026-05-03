@@ -1,0 +1,127 @@
+---
+import Base from "../layouts/Base.astro";
+import { SITE } from "../consts";
+---
+
+<Base
+  title="Contact"
+  description={`Inquire about available paintings by ${SITE.artistName}.`}
+>
+  <section class="section surface-mauve">
+    <div class="container contact">
+      <div class="contact__intro">
+        <p class="eyebrow">Inquire</p>
+        <h1 class="h1">Say hello.</h1>
+        <p class="lede">
+          For available originals, studio visits, or commissions — send a note.
+          Replies usually within a few days.
+        </p>
+        <p class="contact__direct">
+          Prefer email? <a class="brush" href={`mailto:${SITE.email}`}>{SITE.email}</a>
+        </p>
+      </div>
+
+      <form
+        class="form"
+        name="inquiry"
+        method="POST"
+        data-netlify="true"
+        netlify-honeypot="bot-field"
+        action="/contact/?sent=1"
+      >
+        <input type="hidden" name="form-name" value="inquiry" />
+        <p class="hp">
+          <label>Don't fill this out: <input name="bot-field" /></label>
+        </p>
+
+        <div class="field">
+          <label for="name">Name</label>
+          <input id="name" name="name" type="text" required autocomplete="name" />
+        </div>
+
+        <div class="field">
+          <label for="email">Email</label>
+          <input id="email" name="email" type="email" required autocomplete="email" />
+        </div>
+
+        <div class="field">
+          <label for="work">Which work? <span class="muted">(optional)</span></label>
+          <input id="work" name="work" type="text" />
+        </div>
+
+        <div class="field">
+          <label for="message">Message</label>
+          <textarea id="message" name="message" rows="5" required></textarea>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Send inquiry</button>
+      </form>
+
+      <script is:inline>
+        // Prefill "work" from ?work= if present, and show a thank-you if ?sent=1
+        const params = new URLSearchParams(location.search);
+        const work = params.get("work");
+        if (work) {
+          const el = document.getElementById("work");
+          if (el) el.value = work;
+        }
+        if (params.get("sent")) {
+          const f = document.querySelector(".form");
+          if (f) {
+            const msg = document.createElement("p");
+            msg.className = "form__thanks";
+            msg.textContent = "Thank you — your message is on its way.";
+            f.replaceWith(msg);
+          }
+        }
+      </script>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .contact {
+    display: grid;
+    gap: clamp(2rem, 5vw, 4rem);
+    align-items: start;
+  }
+  @media (min-width: 900px) {
+    .contact { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+  }
+  .contact__intro .eyebrow { margin-bottom: 0.75rem; }
+  .contact__direct { margin-top: 1.25rem; color: var(--ink-soft); }
+
+  .form { display: grid; gap: 1.25rem; max-width: 36rem; }
+  .field { display: grid; gap: 0.4rem; }
+  .field label {
+    font-family: var(--font-sans);
+    font-size: 0.75rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--ink-muted);
+  }
+  .field .muted { text-transform: none; letter-spacing: 0; color: var(--ink-muted); }
+  .field input, .field textarea {
+    width: 100%;
+    padding: 0.85rem 1rem;
+    border: 1px solid var(--on-surface-line, var(--line));
+    background-color: color-mix(in oklab, var(--cream) 70%, white);
+    border-radius: 4px;
+    font-family: var(--font-serif);
+    font-size: 1rem;
+    color: var(--ink);
+    transition: border-color var(--dur) var(--ease-out), background-color var(--dur) var(--ease-out);
+  }
+  .field input:focus, .field textarea:focus {
+    border-color: var(--cobalt);
+    outline: none;
+    background-color: white;
+  }
+  .hp { position: absolute; left: -9999px; }
+  .form__thanks {
+    font-family: var(--font-serif);
+    font-size: var(--step-1);
+    color: var(--ink);
+    padding: 2rem 0;
+  }
+</style>

@@ -1,0 +1,372 @@
+---
+import { getCollection } from "astro:content";
+import { Image } from "astro:assets";
+import Base from "../layouts/Base.astro";
+import { SITE, ROOMS } from "../consts";
+import signatureMark from "../../Untitled image (1)@2x.png";
+import butterflyMark from "../../Untitled image.png";
+
+const paintings = (await getCollection("paintings"))
+  .filter((p) => p.data.featured)
+  .sort((a, b) => a.data.order - b.data.order);
+
+// Use up to 3 paintings for the wall collage
+const wall = paintings.slice(0, 3);
+---
+
+<Base hideNav hideFooter>
+  <section class="entry">
+    <div class="entry__inner">
+      <header class="entry__brand rise">
+        <p class="entry__brandmark">{SITE.artistName}</p>
+      </header>
+
+      <div class="entry__body">
+        <div class="entry__left">
+          <h1 class="entry__title sr-only">Paintings, quiet light, silhouette.</h1>
+          <div class="entry__signature" aria-hidden="true">
+            <div class="entry__signature-mark rise rise-1">
+              <Image
+                class="entry__signature-image"
+                src={signatureMark}
+                alt=""
+                widths={[500, 900, 1400]}
+                sizes="(min-width: 920px) 42vw, 82vw"
+                loading="eager"
+                format="png"
+              />
+            </div>
+            <div class="entry__butterfly-mark rise rise-2">
+              <Image
+                class="entry__butterfly-image"
+                src={butterflyMark}
+                alt=""
+                widths={[240, 420, 700]}
+                sizes="(min-width: 920px) 14vw, 28vw"
+                loading="eager"
+                format="png"
+              />
+            </div>
+          </div>
+
+          <p class="eyebrow entry__rooms-label rise rise-3">The Rooms</p>
+          <ol class="menu rise rise-3" aria-label="Site sections">
+            {ROOMS.map((room) => (
+              <li class="menu__item">
+                <a href={room.href} class="menu__link">
+                  <span class="menu__index">{room.index}</span>
+                  <span class="menu__label brush">{room.label}</span>
+                  <span class="menu__arrow" aria-hidden="true">→</span>
+                </a>
+              </li>
+            ))}
+          </ol>
+        </div>
+
+        <div class="wall rise rise-1" aria-hidden={wall.length === 0}>
+          {wall.map((p, i) => (
+            <a class={`wall__piece wall__piece--${i + 1}`} href={`/works/${p.id}/`} aria-label={`View ${p.data.title}`}>
+              <Image
+                src={p.data.cover}
+                alt={p.data.alt}
+                widths={[400, 700, 1000]}
+                sizes="(min-width: 900px) 30vw, 50vw"
+                loading={i === 0 ? "eager" : "lazy"}
+                format="avif"
+                quality={85}
+              />
+              <span class="wall__pin" aria-hidden="true"></span>
+            </a>
+          ))}
+        </div>
+      </div>
+    </div>
+
+    <!-- Marquee: painterly terms ticking slowly across the bottom -->
+    <div class="marquee" role="presentation">
+      <div class="marquee__track">
+        <span>
+          <span>Paintings</span><span class="marquee__star">✺</span>
+          <span>Acrylic on canvas</span><span class="marquee__star">✺</span>
+          <span>Original</span><span class="marquee__star">✺</span>
+          <span>Studio</span><span class="marquee__star">✺</span>
+          <span>One of a kind</span><span class="marquee__star">✺</span>
+          <span>Inquire</span><span class="marquee__star">✺</span>
+        </span>
+        <span aria-hidden="true">
+          <span>Paintings</span><span class="marquee__star">✺</span>
+          <span>Acrylic on canvas</span><span class="marquee__star">✺</span>
+          <span>Original</span><span class="marquee__star">✺</span>
+          <span>Studio</span><span class="marquee__star">✺</span>
+          <span>One of a kind</span><span class="marquee__star">✺</span>
+          <span>Inquire</span><span class="marquee__star">✺</span>
+        </span>
+      </div>
+    </div>
+
+    <p class="entry__caption">{SITE.tagline} · <span class="muted">{SITE.location}</span></p>
+  </section>
+</Base>
+
+<style>
+  .entry {
+    min-height: 100svh;
+    display: flex;
+    flex-direction: column;
+    background-color: var(--cream);
+    overflow: hidden;
+  }
+  .entry__inner {
+    flex: 1;
+    display: grid;
+    grid-template-rows: auto 1fr;
+    gap: clamp(1.5rem, 3vw, 2.5rem);
+    padding: clamp(1rem, 2.5vw, 1.75rem) var(--gutter) clamp(1rem, 2vw, 1.5rem);
+    max-width: var(--container);
+    margin-inline: auto;
+    width: 100%;
+  }
+
+  /* Top brand strip */
+  .entry__brand {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1rem;
+    flex-wrap: wrap;
+    border-bottom: 1px solid var(--line);
+    padding-bottom: 1rem;
+  }
+  .entry__brandmark {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-weight: 400;
+    font-size: 1.05rem;
+    letter-spacing: -0.005em;
+  }
+
+  /* Body grid */
+  .entry__body {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: clamp(2rem, 4vw, 4rem);
+    align-items: center;
+    align-content: center;
+  }
+  @media (min-width: 920px) {
+    .entry__body { grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr); }
+  }
+
+  .entry__signature {
+    position: relative;
+    width: min(100%, 42rem);
+    min-height: clamp(10rem, 22vw, 15rem);
+    margin-bottom: clamp(2.2rem, 4vw, 3.25rem);
+    overflow: visible;
+    z-index: 0;
+  }
+  .entry__signature-mark {
+    position: absolute;
+    inset: 0;
+    overflow: visible;
+  }
+  .entry__signature-image {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: min(100%, 40rem);
+    max-width: 100%;
+    height: auto;
+    opacity: 1;
+    mix-blend-mode: multiply;
+    transform: translate(-7%, -6%) scale(1.04);
+    transform-origin: top left;
+    image-rendering: -webkit-optimize-contrast;
+    filter:
+      grayscale(1)
+      brightness(0.28)
+      contrast(1.55);
+  }
+  .entry__butterfly-mark {
+    position: absolute;
+    inset: 0;
+    overflow: visible;
+    pointer-events: none;
+  }
+  .entry__butterfly-image {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: clamp(8rem, 24vw, 12.5rem);
+    max-width: none;
+    height: auto;
+    opacity: 0.98;
+    mix-blend-mode: multiply;
+    transform: translate(13.5rem, 1.9rem) rotate(-7deg);
+    transform-origin: center;
+    filter:
+      brightness(0.38)
+      contrast(1.35)
+      drop-shadow(0 10px 18px color-mix(in oklab, var(--cream) 40%, transparent));
+  }
+  @media (max-width: 919px) {
+    .entry__signature {
+      width: min(100%, 31rem);
+      min-height: clamp(8rem, 34vw, 11rem);
+    }
+    .entry__signature-image {
+      width: min(100%, 29rem);
+      transform: translate(-8%, -10%) scale(1.02);
+    }
+    .entry__butterfly-mark {
+      inset: 0;
+    }
+    .entry__butterfly-image {
+      width: clamp(6.5rem, 24vw, 8.5rem);
+      transform: translate(9.2rem, 1.9rem) rotate(-7deg);
+    }
+  }
+
+  .entry__rooms-label {
+    position: relative;
+    z-index: 2;
+    margin-bottom: 0.85rem;
+  }
+
+  /* Menu */
+  .menu {
+    position: relative;
+    z-index: 2;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    gap: 0;
+  }
+  .menu__item { border-top: 1px solid var(--line); }
+  .menu__item:last-child { border-bottom: 1px solid var(--line); }
+  .menu__link {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: baseline;
+    gap: clamp(0.8rem, 1.6vw, 1.25rem);
+    padding-block: clamp(0.7rem, 1.3vw, 1rem);
+    color: var(--ink);
+    font-family: var(--font-serif);
+    font-weight: 300;
+    font-size: clamp(1.5rem, 2.6vw, 2.1rem);
+    line-height: 1;
+    letter-spacing: -0.015em;
+    transition: color var(--dur) var(--ease-out), padding-left var(--dur) var(--ease-out);
+  }
+  .menu__index {
+    font-family: var(--font-sans);
+    font-size: 0.7rem;
+    letter-spacing: 0.18em;
+    color: var(--ink-muted);
+    align-self: center;
+  }
+  .menu__arrow {
+    font-family: var(--font-serif);
+    font-size: clamp(1rem, 1.6vw, 1.4rem);
+    color: var(--ink-muted);
+    transform: translateX(-0.4em);
+    opacity: 0;
+    transition: transform var(--dur) var(--ease-out), opacity var(--dur) var(--ease-out), color var(--dur) var(--ease-out);
+    align-self: center;
+  }
+  .menu__link:hover,
+  .menu__link:focus-visible {
+    padding-left: 0.4rem;
+    outline: none;
+  }
+  .menu__link:hover .menu__arrow,
+  .menu__link:focus-visible .menu__arrow {
+    transform: translateX(0);
+    opacity: 1;
+    color: var(--accent);
+  }
+
+  /* The wall — collage of pinned paintings */
+  .wall {
+    position: relative;
+    aspect-ratio: 4 / 5;
+    width: 100%;
+    max-width: 640px;
+    margin-inline: auto;
+  }
+  .wall__piece {
+    position: absolute;
+    overflow: hidden;
+    background-color: var(--mauve);
+    box-shadow:
+      0 1px 0 color-mix(in oklab, var(--ink) 8%, transparent),
+      0 22px 40px -20px color-mix(in oklab, var(--ink) 32%, transparent),
+      0 6px 14px -6px color-mix(in oklab, var(--ink) 20%, transparent);
+    transition: transform var(--dur) var(--ease-out), box-shadow var(--dur) var(--ease-out);
+  }
+  .wall__piece :global(img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  .wall__pin {
+    position: absolute;
+    top: 8px; left: 50%;
+    width: 10px; height: 10px;
+    border-radius: 999px;
+    background: radial-gradient(circle at 30% 30%, var(--accent), var(--accent-deep));
+    transform: translateX(-50%);
+    box-shadow: 0 1px 2px color-mix(in oklab, var(--ink) 40%, transparent);
+    pointer-events: none;
+  }
+
+  /* Three-piece collage layout */
+  .wall__piece--1 {
+    top: 4%; left: 6%;
+    width: 58%;
+    aspect-ratio: 4 / 5;
+    transform: rotate(-3.2deg);
+    z-index: 3;
+  }
+  .wall__piece--2 {
+    top: 22%; right: 2%;
+    width: 50%;
+    aspect-ratio: 5 / 4;
+    transform: rotate(2.6deg);
+    z-index: 2;
+  }
+  .wall__piece--3 {
+    bottom: 4%; left: 22%;
+    width: 44%;
+    aspect-ratio: 1 / 1;
+    transform: rotate(-1.4deg);
+    z-index: 1;
+  }
+  .wall__piece:hover {
+    transform: rotate(0) translateY(-4px);
+    z-index: 4;
+    box-shadow:
+      0 1px 0 color-mix(in oklab, var(--ink) 8%, transparent),
+      0 30px 50px -20px color-mix(in oklab, var(--ink) 38%, transparent),
+      0 10px 20px -8px color-mix(in oklab, var(--ink) 24%, transparent);
+  }
+  @media (max-width: 640px) {
+    .wall { aspect-ratio: 5 / 4; max-width: 480px; }
+    .wall__piece--1 { width: 64%; transform: rotate(-2.5deg); }
+    .wall__piece--2 { width: 54%; transform: rotate(2deg); }
+    .wall__piece--3 { width: 48%; transform: rotate(-1deg); }
+  }
+
+  /* Caption row below the marquee */
+  .entry__caption {
+    text-align: center;
+    padding: 0.9rem var(--gutter);
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-size: 0.95rem;
+    color: var(--ink-soft);
+  }
+  .entry__caption .muted { color: var(--ink-muted); font-style: normal; letter-spacing: 0.04em; font-size: 0.85rem; }
+</style>

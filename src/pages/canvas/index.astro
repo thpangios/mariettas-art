@@ -1,0 +1,58 @@
+---
+import { getCollection } from "astro:content";
+import Base from "../../layouts/Base.astro";
+import PaintingCard from "../../components/PaintingCard.astro";
+
+const paintings = (await getCollection("paintings"))
+  .filter((p) => p.data.category === "canvas")
+  .sort((a, b) => a.data.order - b.data.order);
+---
+
+<Base
+  title="Canvas"
+  description="Original acrylic paintings on canvas — figurative works exploring light, silhouette, and quiet narrative."
+>
+  <section class="section">
+    <div class="container">
+      <header class="section__head">
+        <p class="eyebrow">01 — The Rooms</p>
+        <h1 class="h1">Canvas</h1>
+        <p class="lede">Original acrylic paintings on canvas. Each piece is one-of-a-kind. Click any work for details and inquiries.</p>
+      </header>
+      {paintings.length > 0 ? (
+        <div class="grid">
+          {paintings.map((p, i) => (
+            <PaintingCard
+              href={`/works/${p.id}/`}
+              title={p.data.title}
+              year={p.data.year}
+              medium={p.data.medium}
+              image={p.data.cover}
+              status={p.data.status}
+              eager={i < 2}
+            />
+          ))}
+        </div>
+      ) : (
+        <p class="empty">New canvas works are on the way.</p>
+      )}
+    </div>
+  </section>
+</Base>
+
+<style>
+  .section__head { margin-bottom: clamp(2rem, 5vw, 4rem); max-width: 56rem; }
+  .section__head .eyebrow { margin-bottom: 0.75rem; }
+  .section__head .lede { margin-top: 1rem; }
+  .grid {
+    display: grid;
+    gap: clamp(1.75rem, 3.5vw, 3.5rem) clamp(1.25rem, 2.5vw, 2.5rem);
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr));
+  }
+  .empty {
+    font-family: var(--font-serif);
+    font-size: var(--step-1);
+    color: var(--ink-muted);
+    padding-block: 3rem;
+  }
+</style>

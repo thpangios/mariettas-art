@@ -1,0 +1,83 @@
+---
+import { Image } from "astro:assets";
+import type { ImageMetadata } from "astro";
+
+interface Props {
+  href: string;
+  title: string;
+  year?: number | string;
+  medium?: string;
+  image: ImageMetadata;
+  status?: "available" | "sold" | "reserved";
+  eager?: boolean;
+}
+
+const { href, title, year, medium, image, status = "available", eager = false } = Astro.props;
+---
+
+<a class="card" href={href} aria-label={`${title}${year ? `, ${year}` : ""}`}>
+  <div class="card__frame">
+    <Image
+      src={image}
+      alt={title}
+      widths={[400, 700, 1100]}
+      sizes="(min-width: 900px) 33vw, (min-width: 600px) 50vw, 100vw"
+      loading={eager ? "eager" : "lazy"}
+      decoding="async"
+      class="card__img"
+      format="avif"
+      quality={82}
+    />
+  </div>
+  <div class="card__meta">
+    <div class="card__title">
+      <span class="brush">{title}</span>
+      {year && <span class="card__year">, {year}</span>}
+    </div>
+    {medium && <div class="card__sub">{medium}</div>}
+    {status !== "available" && <div class="card__status">{status}</div>}
+  </div>
+</a>
+
+<style>
+  .card {
+    display: block;
+    color: inherit;
+  }
+  .card__frame {
+    overflow: hidden;
+    background-color: var(--paper-warm);
+    transition: transform var(--dur) var(--ease-out);
+  }
+  .card__img {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    transition: transform var(--dur-slow) var(--ease-out), filter var(--dur) var(--ease-out);
+  }
+  .card:hover .card__img,
+  .card:focus-visible .card__img {
+    transform: scale(1.02);
+  }
+  .card__meta {
+    margin-top: 0.9rem;
+    font-family: var(--font-serif);
+    font-size: 1.05rem;
+    letter-spacing: -0.005em;
+  }
+  .card__year { color: var(--ink-muted); font-style: italic; }
+  .card__sub {
+    font-family: var(--font-sans);
+    font-size: 0.85rem;
+    color: var(--ink-muted);
+    margin-top: 0.15rem;
+  }
+  .card__status {
+    font-family: var(--font-sans);
+    font-size: 0.7rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--sun-red);
+    margin-top: 0.35rem;
+  }
+</style>
