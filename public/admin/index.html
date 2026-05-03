@@ -4,7 +4,197 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="robots" content="noindex" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="theme-color" content="#eaddc6" />
     <title>Studio · Content</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;1,9..144,300&family=Inter:wght@400;500;600&display=swap"
+    />
+
+    <style>
+      :root {
+        --cream: #eaddc6;
+        --cream-deep: #ddcdb1;
+        --mauve: #c7a8b2;
+        --mauve-deep: #a98995;
+        --mauve-ink: #7e5a65;
+        --ink: #1f1a17;
+        --ink-soft: #4a3f37;
+        --ink-muted: #8a7c6e;
+        --line: #cfc1a8;
+        --cobalt: #2b3a67;
+        --cobalt-deep: #1d294a;
+        --serif: "Fraunces", Georgia, serif;
+        --sans: "Inter", system-ui, -apple-system, sans-serif;
+      }
+
+      html, body { background: var(--cream); }
+      body, .nc-app, [class*="App__"] { background: var(--cream) !important; }
+
+      /* Headings + UI typography */
+      body, input, textarea, select, button, [class*="App"], [class*="Sidebar"], [class*="EntryEditor"] {
+        font-family: var(--sans);
+        color: var(--ink);
+      }
+      h1, h2, h3, [class*="EntryHeader"] h1, [class*="CollectionTop"] h1, [class*="CollectionTopHeading"] {
+        font-family: var(--serif) !important;
+        font-weight: 400 !important;
+        letter-spacing: -0.01em;
+        color: var(--ink) !important;
+      }
+
+      /* Top app bar */
+      [class*="AppHeader"], header[class*="AppHeader"] {
+        background: var(--cream-deep) !important;
+        border-bottom: 1px solid var(--line) !important;
+        box-shadow: none !important;
+      }
+      [class*="AppHeader"] a, [class*="AppHeader"] button, [class*="AppHeader"] svg {
+        color: var(--ink) !important;
+      }
+      [class*="AppHeaderNavLink"][class*="active"],
+      [class*="AppHeaderNavLink"]:hover {
+        color: var(--cobalt) !important;
+      }
+
+      /* Sidebar (collections list) */
+      [class*="SidebarNavList"], aside[class*="Sidebar"] {
+        background: transparent !important;
+      }
+      [class*="SidebarNavLink"] {
+        color: var(--ink-soft) !important;
+        font-family: var(--sans) !important;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+        font-size: 0.78rem !important;
+        padding: 0.85rem 1rem !important;
+        border-radius: 4px !important;
+      }
+      [class*="SidebarNavLink"]:hover {
+        background: color-mix(in oklab, var(--cream) 60%, white) !important;
+        color: var(--ink) !important;
+      }
+      [class*="SidebarNavLink"][class*="active"] {
+        background: var(--cream-deep) !important;
+        color: var(--ink) !important;
+      }
+
+      /* Card / panel surfaces */
+      [class*="Card"], [class*="EntryContainer"], [class*="ControlPaneContainer"], [class*="EditorControlPane"], [class*="PreviewPane"] {
+        background: color-mix(in oklab, var(--cream) 50%, white) !important;
+        border-color: var(--line) !important;
+      }
+
+      /* Inputs */
+      input[type="text"], input[type="email"], input[type="number"], input[type="password"], textarea, [contenteditable="true"], [class*="Control"] input, [class*="Control"] textarea {
+        background: white !important;
+        border: 1px solid var(--line) !important;
+        border-radius: 4px !important;
+        font-family: var(--serif) !important;
+        font-size: 1rem !important;
+        color: var(--ink) !important;
+        transition: border-color 180ms ease;
+      }
+      input:focus, textarea:focus, [contenteditable="true"]:focus {
+        border-color: var(--cobalt) !important;
+        outline: none !important;
+        box-shadow: 0 0 0 3px color-mix(in oklab, var(--cobalt) 18%, transparent) !important;
+      }
+
+      /* Field labels */
+      label, [class*="FieldLabel"], [class*="ControlLabel"] {
+        font-family: var(--sans) !important;
+        font-size: 0.72rem !important;
+        letter-spacing: 0.18em !important;
+        text-transform: uppercase !important;
+        color: var(--ink-muted) !important;
+        font-weight: 500 !important;
+      }
+
+      /* Buttons — primary uses cobalt, secondary stays neutral */
+      button, [role="button"] {
+        font-family: var(--sans) !important;
+        font-weight: 500 !important;
+        letter-spacing: 0.02em;
+        border-radius: 4px !important;
+        transition: background 180ms ease, transform 180ms ease;
+      }
+      [class*="ToolbarButton"][class*="primary"],
+      [class*="PublishButton"],
+      button[class*="primary"] {
+        background: var(--cobalt) !important;
+        color: #fff !important;
+        border: 1px solid var(--cobalt-deep) !important;
+      }
+      [class*="ToolbarButton"][class*="primary"]:hover,
+      [class*="PublishButton"]:hover,
+      button[class*="primary"]:hover {
+        background: var(--cobalt-deep) !important;
+      }
+
+      /* Links */
+      a { color: var(--cobalt); }
+      a:hover { color: var(--cobalt-deep); }
+
+      /* Login screen — Identity widget */
+      .netlify-identity-button,
+      [class*="LoginButton"] {
+        background: var(--cobalt) !important;
+        color: #fff !important;
+        border: 1px solid var(--cobalt-deep) !important;
+        font-family: var(--sans) !important;
+        font-weight: 500 !important;
+        letter-spacing: 0.04em;
+        padding: 0.85rem 1.5rem !important;
+        border-radius: 4px !important;
+      }
+
+      /* Decap login wrapper — center it on a cream surface with a heading */
+      [class*="LoginPage"] {
+        background: var(--cream) !important;
+      }
+      [class*="LoginPage"]::before {
+        content: "Studio";
+        display: block;
+        font-family: var(--serif);
+        font-size: clamp(2.4rem, 6vw, 3.6rem);
+        font-weight: 300;
+        letter-spacing: -0.02em;
+        color: var(--ink);
+        text-align: center;
+        margin-bottom: 0.4rem;
+      }
+      [class*="LoginPage"]::after {
+        content: "Sign in to update the site.";
+        display: block;
+        font-family: var(--sans);
+        font-size: 0.78rem;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+        color: var(--ink-muted);
+        text-align: center;
+        margin-top: -2.4rem;
+        margin-bottom: 2rem;
+      }
+
+      /* Tighten media library / image cards */
+      [class*="MediaLibrary"] [class*="Card"] {
+        border-radius: 4px !important;
+        overflow: hidden;
+      }
+
+      /* Editorial workflow board */
+      [class*="WorkflowList"] [class*="WorkflowCard"] {
+        background: white !important;
+        border: 1px solid var(--line) !important;
+        border-radius: 4px !important;
+        box-shadow: 0 1px 0 rgba(31, 26, 23, 0.04) !important;
+      }
+    </style>
   </head>
   <body>
     <!-- Netlify Identity widget: shows the login modal -->
